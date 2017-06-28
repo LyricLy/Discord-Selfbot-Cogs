@@ -45,8 +45,9 @@ class massnick:
                 except discord.Forbidden: print("Unable to reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
 
     @commands.command(aliases=['rn'], pass_context=True)
-    async def resetnicks(self, ctx):
+    async def resetnicks(self, ctx, *, nick = None):
         for member in ctx.message.server.members:
+            if nick != None and member.nick != nick: continue
             await self.bot.change_nickname(member, None)
 
 def setup(bot):
