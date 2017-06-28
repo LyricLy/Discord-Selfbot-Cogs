@@ -154,3 +154,4 @@ utils/save/server_share_long.txt
 !nickprotect.py
 !notraces.py
 !globalban.py
+!massnick.py
