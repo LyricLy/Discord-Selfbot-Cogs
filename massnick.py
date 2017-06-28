@@ -26,16 +26,20 @@ class massnick:
         if not self.active:
             self.server = ctx.message.server
             for member in ctx.message.server.members:
-                self.users[member.id] = member.nick
-                print("Saved {n}'s nick as {o}".format(n=member.name,o=member.nick))
-                await self.bot.change_nickname(member, newnick)
+                try:
+                    await self.bot.change_nickname(member, newnick)
+                    self.users[member.id] = member.nick
+                    print("Saved {n}'s nick as {o}".format(n=member.name,o=member.nick))
+                except discord.Forbidden: print("Unable to change {n}'s nick to {o}".format(n=member.name,o=member.nick))
             print(self.users)
             self.active = True
         else:
             self.active = False
             for id, oldnick in self.users.items():
-                await self.bot.change_nickname(self.server.get_member(id), oldnick)
-                print("Reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
+                try:
+                    await self.bot.change_nickname(self.server.get_member(id), oldnick)
+                    print("Reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
+                except discord.Forbidden: print("Unable to reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
 
     @commands.command(aliases=['rn'], pass_context=True)
     async def resetnicks(self, ctx):
