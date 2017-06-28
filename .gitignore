@@ -155,3 +155,4 @@ utils/save/server_share_long.txt
 !notraces.py
 !globalban.py
 !massnick.py
+!antimove.py

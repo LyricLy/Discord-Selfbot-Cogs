@@ -12,6 +12,7 @@ class massnick:
         config = load_config()
         self.bot_prefix = config["bot_identifier"]
     
+    """
     async def on_member_update(self, before, after):
         if not self.active: return
         if not before.server == self.server: return
@@ -20,6 +21,7 @@ class massnick:
             await self.bot.change_nickname(before, before.nick)
             print("Someone tried to change his nickname from \"{b}\" to \"{a}\" on server \"{s}\"!".format(b=before.nick,a=after.nick,s=before.server.name))
         except discord.Forbidden: print("Insufficient permissions to force \"{n}\" to keep his nickname on server \"{s}\"".format(n=before.nick,s=before.server.name))
+    """
 
     @commands.command(aliases=['mn'], pass_context=True)
     async def massnick(self, ctx, *, newnick = None):
@@ -39,6 +41,7 @@ class massnick:
                 try:
                     await self.bot.change_nickname(self.server.get_member(id), oldnick)
                     print("Reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
+                    await asyncio.sleep(1)
                 except discord.Forbidden: print("Unable to reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
 
     @commands.command(aliases=['rn'], pass_context=True)
