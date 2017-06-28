@@ -7,7 +7,7 @@ class massnick:
     def __init__(self, bot):
         self.bot = bot
         self.active = False
-        self.server = 0
+        self.server = None
         self.users = {}
         config = load_config()
         self.bot_prefix = config["bot_identifier"]
@@ -26,14 +26,21 @@ class massnick:
         if not self.active:
             self.server = ctx.message.server
             for member in ctx.message.server.members:
-                self.users[member] = member.nick
+                self.users[member.id] = member.nick
+                print("Saved {n}'s nick as {o}".format(n=member.name,o=member.nick))
                 await self.bot.change_nickname(member, newnick)
             print(self.users)
             self.active = True
         else:
-            for member, oldnick in self.users:
-                await self.bot.change_nickname(member, oldnick)
             self.active = False
+            for id, oldnick in self.users.items():
+                await self.bot.change_nickname(self.server.get_member(id), oldnick)
+                print("Reset {n}'s nick to {o}".format(n=self.server.get_member(id).name,o=oldnick))
+
+    @commands.command(aliases=['rn'], pass_context=True)
+    async def resetnicks(self, ctx):
+        for member in ctx.message.server.members:
+            await self.bot.change_nickname(member, None)
 
 def setup(bot):
     bot.add_cog(massnick(bot))
