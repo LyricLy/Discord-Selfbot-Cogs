@@ -1,6 +1,8 @@
 import discord, asyncio
 from discord.ext import commands
 from cogs.utils.checks import *
+try: from appuselfbot import bot_prefix
+except NameError: bot_prefix = None
 
 class notraces:
 
@@ -8,9 +10,11 @@ class notraces:
         self.bot = bot
         self.active = False
         self.delete_after = 30
-        config = load_config()
-        self.cmd_prefix = config["cmd_prefix"]
-        self.bot_prefix = config["bot_identifier"]
+        if bot_prefix is not None:
+            self.bot_prefix = bot_prefix
+        else:
+            config = load_config()
+            self.bot_prefix = config["bot_identifier"]
     
     @commands.command(aliases=['nt'], pass_context=True)
     async def notrace(self, ctx):
