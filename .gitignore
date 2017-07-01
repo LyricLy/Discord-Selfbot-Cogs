@@ -139,7 +139,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # Python Files
-*.py
+# *.py
 utils/credit.txt
 utils/save/largest_server.txt
 utils/save/mem_info.txt
@@ -150,9 +150,9 @@ utils/save/total_users.txt
 utils/save/server_share_long.txt
 
 # My cocks
-!blu.py
-!nickprotect.py
-!notraces.py
-!globalban.py
-!massnick.py
-!antimove.py
+#!blu.py
+#!nickprotect.py
+#!notraces.py
+#!globalban.py
+#!massnick.py
+#!antimove.py
