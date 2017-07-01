@@ -24,6 +24,7 @@ class antimove:
 
     @commands.command(aliases=['am'], pass_context=True)
     async def antimove(self, ctx):
+        """Toggles Voice Antimove so you stay in the channel you choose."""
         self.active = not self.active
         await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + 'Antimove set to: `%s`' % self.active)
 

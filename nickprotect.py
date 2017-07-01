@@ -28,6 +28,7 @@ class nickprotect:
 
     @commands.command(aliases=['np'], pass_context=True)
     async def nickprotect(self, ctx):
+        """Toggles nickprotect mode so you keep your nick when you have enough permissions."""
         self.active = not self.active
         await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + 'Nickprotect set to: `%s`' % self.active)
 

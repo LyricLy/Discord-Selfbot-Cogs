@@ -13,6 +13,7 @@ class notraces:
     
     @commands.command(aliases=['nt'], pass_context=True)
     async def notrace(self, ctx):
+        """Toggles notraces mode which autodeletes **all** your messages after [seconds_tod_elete] have passed."""
         if not self.active:
         #if ' ' in ctx.message.content:
             params = ctx.message.content.split(' ', 1)

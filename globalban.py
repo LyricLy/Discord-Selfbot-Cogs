@@ -1,4 +1,4 @@
-import discord, asyncio, requests
+import discord, asyncio, requests, os
 from discord.ext import commands
 from cogs.utils.checks import *
 
@@ -25,7 +25,7 @@ class globalban:
               print(client.user.id)
               print('------')
 
-            client.run('MzI5MjI2NTA2MTEzMTIyMzA0.DDPXnw.UMN_crUM-UX2233jnXmCvyP55cc')
+            client.run('***REMOVED***')
             return client.get_user_info(int(user))"""
             return False
         except:
@@ -35,7 +35,7 @@ class globalban:
         payload = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.157 Chrome/58.0.3029.110 Discord Canary/1.7.1 Safari/537.36',
             # 'authority': 'canary.discordapp.com',
-            'authorization': 'MzI5MjI2NTA2MTEzMTIyMzA0.DDPXnw.UMN_crUM-UX2233jnXmCvyP55cc'
+            'authorization': os.environ['TOKEN']
         }
         r = requests.put("https://canary.discordapp.com/api/v6/users/@me/relationships/"+id, data=payload)
         msg = "Requested https://canary.discordapp.com/api/v6/users/@me/relationships/"+id
@@ -47,7 +47,7 @@ class globalban:
         payload = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/0.0.157 Chrome/58.0.3029.110 Discord Canary/1.7.1 Safari/537.36',
             # 'authority': 'canary.discordapp.com',
-            'authorization': 'MzI5MjI2NTA2MTEzMTIyMzA0.DDPXnw.UMN_crUM-UX2233jnXmCvyP55cc'
+            'authorization': os.environ['TOKEN']
         }
         r = requests.delete("https://canary.discordapp.com/api/v6/users/@me/relationships/"+id, data=payload)
         msg = "Requested https://canary.discordapp.com/api/v6/users/@me/relationships/"+id
@@ -57,6 +57,7 @@ class globalban:
 
     @commands.command(aliases=['fu'], pass_context=True)
     async def finduser(self, ctx, *, user):
+        """Debug command. Checks if we could find the user you're searching for."""
         try:
             member = self.get_user(user,ctx.message)
             if not member: await self.bot.send_message(message.channel, "User \"%s\" not found."%user); return
@@ -66,6 +67,7 @@ class globalban:
 
     @commands.command(aliases=['bl'], pass_context=True)
     async def block(self, ctx, *, user):
+        """Blocks the user you provide."""
         try:
             member = self.get_user(user,ctx.message)
             block = self.block_user(member.id)
@@ -75,6 +77,7 @@ class globalban:
 
     @commands.command(aliases=['gban'], pass_context=True)
     async def globalban(self, ctx, *, user):
+        """Bans the given user from all servers you have permissions to and blocks him."""
         try:
             member = self.get_user(user,ctx.message)
             if not member: await self.bot.send_message(message.channel, "User \"%s\" not found."%user); return
@@ -86,14 +89,15 @@ class globalban:
                     servers += 1
                 except discord.Forbidden: pass
             if servers > 0:
-                await self.bot.send_message(ctx.message.channel, "{} Banned user: {} from {} servers.".format(self.bot.bot_prefix, member.mention, servers))
+                await self.bot.send_message(ctx.message.channel, "{} Blocked and banned user: {} from {} servers.".format(self.bot.bot_prefix, member.mention, servers))
             else:
-                await self.bot.send_message(ctx.message.channel, "{} No servers to ban user {} from.".format(self.bot.bot_prefix, member.mention))
+                await self.bot.send_message(ctx.message.channel, "{} No servers to ban user {} from. Only blocked him.".format(self.bot.bot_prefix, member.mention))
         except:
             from traceback import format_exc;await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + " Error:\n\n%s" % format_exc())
 
     @commands.command(aliases=['gunban'], pass_context=True)
     async def globalunban(self, ctx, *, user):
+        """Unbans the given user from all servers you have permissions to and unblocks him."""
         try:
             member = self.get_user(user,ctx.message)
             if not member: await self.bot.send_message(message.channel, "User \"%s\" not found."%user); return

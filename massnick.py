@@ -25,6 +25,8 @@ class massnick:
 
     @commands.command(aliases=['mn'], pass_context=True)
     async def massnick(self, ctx, *, newnick = None):
+        """Changes the nickname of all users of the current server to [newnick]
+        Use it a second time to revert all nicknames with a 1 second delay"""
         if not self.active:
             self.server = ctx.message.server
             for member in ctx.message.server.members:
@@ -46,6 +48,7 @@ class massnick:
 
     @commands.command(aliases=['rn'], pass_context=True)
     async def resetnicks(self, ctx, *, nick = None):
+        """Removes all nicknames on the current server."""
         for member in ctx.message.server.members:
             if nick != None and member.nick != nick: continue
             await self.bot.change_nickname(member, None)
