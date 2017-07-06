@@ -20,7 +20,7 @@ class antimove:
             self.allowed = True
             await self.bot.move_member(before, before.voice.voice_channel)
             print("Someone tried to move me from \"{b}\" to \"{a}\" on server \"{s}\"!".format(b=before.voice.voice_channel,a=after.voice.voice_channel,s=before.server.name))
-        except discord.Forbidden: print("Insufficient to move yourself back to \"{n}\" on server \"{s}\"".format(n=before.voice.voice_channel,s=before.server.name))
+        except discord.Forbidden: print("Insufficient permissions to move yourself back to \"{n}\" on server \"{s}\"".format(n=before.voice.voice_channel,s=before.server.name))
 
     @commands.command(aliases=['am'], pass_context=True)
     async def antimove(self, ctx):

@@ -17,6 +17,11 @@ class blu:
                     await asyncio.sleep(30)
                     await self.bot.remove_reaction(message, '\N{REGIONAL INDICATOR SYMBOL LETTER S}', self.bot.user)
                     await self.bot.remove_reaction(message, '\N{REGIONAL INDICATOR SYMBOL LETTER E}', self.bot.user)
-
+        if 'pfeife' in message.content.lower():
+            if message.author.permissions_in(message.channel).add_reactions:
+                await self.bot.add_reaction(message, '<:pfeife:324567059658965023>')
+        if message.author.id == '295641075924729859':
+            if message.author.permissions_in(message.channel).add_reactions:
+                await self.bot.add_reaction(message, '♥')
 def setup(bot):
     bot.add_cog(blu(bot))
