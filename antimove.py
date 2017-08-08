@@ -8,25 +8,26 @@ class antimove:
         self.bot = bot
         self.active = False
         self.allowed = False
-        config = load_config()
-        self.bot_prefix = config["bot_identifier"]
-    
-    async def on_voice_state_update(self, before, after):
+
+    async def on_voice_state_update(self, member, before, after):
         if not self.active: return
-        if not before == self.bot.user: return
-        if before.voice.voice_channel == after.voice.voice_channel: return
+        if not member.id == self.bot.user.id: return
+        if before.channel == after.channel: return
         if self.allowed: self.allowed = False; return
         try:
             self.allowed = True
-            await self.bot.move_member(before, before.voice.voice_channel)
-            print("Someone tried to move me from \"{b}\" to \"{a}\" on server \"{s}\"!".format(b=before.voice.voice_channel,a=after.voice.voice_channel,s=before.server.name))
-        except discord.Forbidden: print("Insufficient permissions to move yourself back to \"{n}\" on server \"{s}\"".format(n=before.voice.voice_channel,s=before.server.name))
+            await member.move_to(before.channel)
+            print("Someone tried to move me from \"{b}\" to \"{a}\" on guild \"{s}\"!".format(b=before.channel,a=after.channel,s=member.guild.name))
+        except discord.Forbidden:
+            print("Insufficient permissions to move yourself back to \"{n}\" on guild \"{s}\"".format(n=before.channel,s=member.guild.name))
+            self.allowed = False
 
     @commands.command(aliases=['am'], pass_context=True)
     async def antimove(self, ctx):
         """Toggles Voice Antimove so you stay in the channel you choose."""
+        await ctx.message.delete()
         self.active = not self.active
-        await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + 'Antimove set to: `%s`' % self.active)
+        await ctx.message.channel.send(self.bot.bot_prefix + 'Antimove set to: `%s`' % self.active)
 
 def setup(bot):
     bot.add_cog(antimove(bot))
