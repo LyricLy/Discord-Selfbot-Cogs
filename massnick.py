@@ -25,16 +25,19 @@ class massnick:
     async def massnick(self, ctx, onlineonly: bool = False, *, newnick = None):
         """Changes the nickname of all users of the current guild to [newnick]
         Use it a second time to revert all nicknames with a 1 second delay"""
+        print('Massnick active on Guild \"%s\" for %s members.'%(self.guild.name, len(self.users)) if self.active else 'Massnick inactive.')
         if not self.active:
             self.guild = ctx.message.guild
             for member in ctx.message.guild.members:
                 if onlineonly and member.status == discord.Status.offline: continue
                 if member.nick == newnick: continue
                 try:
-                    self.users[member.id] = member.nick
+                    _nick = member.nick
                     await member.edit(nick=newnick)
+                    self.users[member.id] = _nick
                     print("Saved {n}'s nick as {o}".format(n=member.name,o=member.nick))
                 except discord.Forbidden: print("Unable to change {n}'s nick to {o}".format(n=member.name,o=member.nick))
+            if len(self.users) == 0: return
             print(self.users)
             self.active = True
         else:
