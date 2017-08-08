@@ -43,7 +43,8 @@ class massnick:
         else:
             self.active = False
             for id, oldnick in self.users.items():
-                if self.guild.get_member(id).nick == oldnick: continue
+                try: if self.guild.get_member(id).nick == oldnick: continue
+                except: pass
                 try:
                     await self.guild.get_member(id).edit(nick=oldnick)
                     print("Reset {n}'s nick to {o}".format(n=self.guild.get_member(id).name,o=oldnick))
@@ -54,7 +55,8 @@ class massnick:
         """Removes all nicknames on the current guild."""
         for member in ctx.message.guild.members:
             if nick != None and member.nick != nick: continue
-            await member.edit(nick=None)
+            try: await member.edit(nick=None)
+            except discord.Forbidden: print("Unable to reset {n}'s nick.".format(n=member.name))
 
 def setup(bot):
     bot.add_cog(massnick(bot))
