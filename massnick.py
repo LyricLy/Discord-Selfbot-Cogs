@@ -43,7 +43,8 @@ class massnick:
         else:
             self.active = False
             for id, oldnick in self.users.items():
-                try: if self.guild.get_member(id).nick == oldnick: continue
+                try:
+                    if self.guild.get_member(id).nick == oldnick: continue
                 except: pass
                 try:
                     await self.guild.get_member(id).edit(nick=oldnick)
